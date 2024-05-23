@@ -3,6 +3,7 @@ const ReportService = require("../controllers/report.service");
 const router = Router();
 const reportService = new ReportService();
 const multer = require("multer");
+const passport = require("passport");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -28,19 +29,26 @@ router.get("/", async (req, res, next) => {
 	}
 });
 
-router.post("/", upload.array("photos", 3), async (req, res, next) => {
-	try {
-		const data = req.body;
-		data.photos = [...req.files.map((file) => file.path)];
-		const report = await reportService.create(data);
+router.post(
+	"/",
+	passport.authenticate("jwt", { session: false }),
+	upload.array("photos", 3),
+	async (req, res, next) => {
+		try {
+			const data = { ...req.body };
+			data.userId = req.user.sub;
+			data.photos = [...req.files.map((file) => file.path)];
 
-		res.json({
-			status: "success",
-			data: report,
-		});
-	} catch (error) {
-		next(error);
+			const report = await reportService.create(data);
+
+			res.json({
+				status: "success",
+				data: report,
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

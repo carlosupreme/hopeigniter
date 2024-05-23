@@ -1,13 +1,13 @@
 const { Schema, model } = require("mongoose");
 
 const ReportSchema = new Schema({
-	user: {
+	userId: {
 		type: Schema.Types.ObjectId,
 		ref: "User",
 		required: true,
 	},
-	municipalityId: {
-		type: Schema.Types.ObjectId,
+	municipality: {
+		type: String,
 		ref: "Municipality",
 		required: true,
 	},
@@ -18,6 +18,7 @@ const ReportSchema = new Schema({
 	teamId: {
 		type: Schema.Types.ObjectId,
 		ref: "User",
+		required: false,
 	},
 	photos: {
 		type: [String],
@@ -38,6 +39,10 @@ const ReportSchema = new Schema({
 		type: String,
 		enum: ["bajo", "medio", "alto"],
 		default: "bajo",
+	},
+	title: {
+		type: String,
+		required: true,
 	},
 	description: {
 		type: String,
