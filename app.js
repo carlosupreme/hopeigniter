@@ -1,12 +1,15 @@
-var createError = require("http-errors");
-const debug = require("debug")("api:index");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
-var logger = require("morgan");
 const cors = require("cors");
 const morgan = require("morgan");
 const { config } = require("./config");
+const {
+	logErrors,
+	boomErrorHandler,
+	errorHandler,
+} = require("./middlewares/errorHandler");
+const routerAPI = require("./routes");
 const app = express();
 
 // middlewares
@@ -17,10 +20,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+require("./libs/mongoose");
+
 app.get("/", (req, res) => {
 	res.send("Servidor");
 });
 
+routerAPI(app);
+
+// middlewares de errores
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
+
 app.listen(config.port, () => {
-	debug(`Servidor ejecutandose en http://localhost:${config.port}`);
+	console.log(`Servidor ejecutandose en http://localhost:${config.port}/api`);
 });

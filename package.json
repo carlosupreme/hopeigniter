@@ -1,9 +1,9 @@
 {
-	"name": "pipefixer",
+	"name": "api",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "set DEBUG=api:* & nodemon app.js"
+		"dev": "DEBUG=api:* & nodemon app.js"
 	},
 	"dependencies": {
 		"@hapi/boom": "^10.0.1",
