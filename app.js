@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 require("./libs/mongoose");
-
+require("./utils/auth");
 app.get("/", (req, res) => {
 	res.send("Servidor");
 });

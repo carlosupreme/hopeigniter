@@ -5,7 +5,7 @@ const router = Router();
 const service = new UserService();
 router.get("/", async (req, res, next) => {
 	try {
-		const users = await service.find();
+		const users = await service.find({});
 		res.json(users);
 	} catch (error) {
 		console.log(error.message);
@@ -18,6 +18,16 @@ router.post("/", async (req, res, next) => {
 		const body = req.body;
 		const newUser = await service.create(body);
 		res.status(201).json(newUser);
+	} catch (error) {
+		next(error);
+	}
+});
+
+router.get("/search", async (req, res, next) => {
+	try {
+		const { name } = req.query;
+		const users = await service.findByName(name);
+		res.json(users);
 	} catch (error) {
 		next(error);
 	}
