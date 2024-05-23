@@ -1,4 +1,4 @@
-const { Schema, default: mongoose, model } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const municipalitySchema = new Schema({
 	name: {
@@ -11,7 +11,9 @@ const municipalitySchema = new Schema({
 	},
 	contactInfo: {
 		type: String,
+		required: false,
 	},
 });
+
 const Municipality = model("Municipality", municipalitySchema);
 module.exports = Municipality;
