@@ -29,6 +29,21 @@ router.get("/", async (req, res, next) => {
 	}
 });
 
+router.get("/municipio/", async (req, res, next) => {
+	try {
+		const { m } = req.query;
+		console.log(m);
+		const reports = await reportService.findByMunicipio(m);
+
+		res.json({
+			status: "success",
+			data: reports,
+		});
+	} catch (error) {
+		next(error);
+	}
+});
+
 router.post(
 	"/",
 	passport.authenticate("jwt", { session: false }),

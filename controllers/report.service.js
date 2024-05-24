@@ -16,6 +16,14 @@ class ReportService {
 		}
 	}
 
+	async findByMunicipio(municipality) {
+		try {
+			return await Report.find({ municipality });
+		} catch (error) {
+			throw boom.badImplementation();
+		}
+	}
+
 	async findById(id) {
 		return await Report.findById(id);
 	}
