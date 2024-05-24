@@ -4,13 +4,14 @@ const router = Router();
 const reportService = new ReportService();
 const multer = require("multer");
 const passport = require("passport");
+const { uuid } = require("uuidv4");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, "public/fotos/");
 	},
 	filename: function (req, file, cb) {
-		cb(null, new Date().toISOString() + file.originalname);
+		cb(null, `${uuid()}.${file.originalname.split(".")[1]}`);
 	},
 });
 
@@ -52,7 +53,11 @@ router.post(
 		try {
 			const data = { ...req.body };
 			data.userId = req.user.sub;
-			data.photos = [...req.files.map((file) => file.path)];
+			data.photos = [
+				...req.files.map((file) => {
+					return file.path.replace("public/", "");
+				}),
+			];
 
 			const report = await reportService.create(data);
 
