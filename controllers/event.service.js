@@ -40,7 +40,14 @@ class EventService {
 			...data,
 			representative: idUser,
 		};
-		const event = await Event.create(data);
+		const event = (await Event.create(data)).populate({
+            path: "team",
+            populate: {
+                path: "members",
+                model: "User",
+                select: "-password"
+            }
+        });
 		return event;
 	}
 	async deleteOne(id) {
