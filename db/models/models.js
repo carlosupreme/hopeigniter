@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
 	password: String,
 	accountType: String,
 	created_at: { type: Date, default: Date.now },
-	updated_at: { type: Date, default: Date.now },
+}, {
+	timestamps: true
 });
 
 const TeamSchema = new mongoose.Schema({
@@ -14,7 +15,8 @@ const TeamSchema = new mongoose.Schema({
 	description: String,
 	members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	created_at: { type: Date, default: Date.now },
-	updated_at: { type: Date, default: Date.now },
+}, {
+	timestamps: true
 });
 
 const EventSchema = new mongoose.Schema({
@@ -24,8 +26,7 @@ const EventSchema = new mongoose.Schema({
 	representative: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	required_amount: Number,
 	collected_amount: { type: Number, default: 0 },
-	created_at: { type: Date, default: Date.now },
-	updated_at: { type: Date, default: Date.now },
+	created_at: { type: Date, default: Date.now }
 });
 
 const DonationSchema = new mongoose.Schema({
@@ -34,6 +35,8 @@ const DonationSchema = new mongoose.Schema({
 	amount: Number,
 	payment_method: String,
 	created_at: { type: Date, default: Date.now },
+},  {
+	timestamps: true
 });
 
 const User = mongoose.model("User", UserSchema);
