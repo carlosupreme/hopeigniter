@@ -2,6 +2,9 @@ const passport = require("passport");
 const { config } = require("../config");
 const router = require("./users.routes");
 const jwt = require("jsonwebtoken");
+const UserService = require("../controllers/user.service");
+const { hash } = require("bcrypt");
+const service = new UserService()
 
 router.post(
 	"/login/local",
@@ -21,7 +24,24 @@ router.post(
 		} catch (error) {
 			next(error);
 		}
-	}
+	},
+
+
 );
+
+router.post("/register", async (req,res, next)=>{
+	try {
+		let data = req.body
+		data  = {
+			...data,
+			password: await hash(data.password, 10)
+		}
+		const usuario = await service.create(data)
+		
+		res.status(201).json(usuario)
+	} catch (error) {
+		next(error)
+	}
+})
 
 module.exports = router;

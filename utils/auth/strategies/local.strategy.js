@@ -14,9 +14,16 @@ const localStrategy = new Strategy(
 		try {
 			if (email === "" && password === "") done(badData(), false);
 			const user = await service.findByEmail(email);
-			if (!user) done(unauthorized(), false);
+			if (!user) {
+				done(unauthorized(), false);
+				console.log("usuario no encontrado");
+			}
+
 			const isMatch = await compare(password, user.password);
-			if (!isMatch) done(unauthorized(), false);
+			if (!isMatch) {
+				done(unauthorized(), false);
+				console.log("password incorrect");
+			}
 			done(null, user);
 		} catch (error) {
 			console.log();

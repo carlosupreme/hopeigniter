@@ -1,11 +1,21 @@
 const { default: mongoose } = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-	name: String,
-	email: String,
-	password: String,
-	accountType: String,
-	created_at: { type: Date, default: Date.now },
+	name: {
+		type: String,
+		required: true
+	},
+	email: {
+		type: String, 
+		unique: true,
+		required: true,
+	},
+	password: {
+
+		type: String, select: false, required: true
+	},
+	
+	accountType: {type: String, enum: ["Empresa", "Normal"], default: "Normal"},
 }, {
 	timestamps: true
 });
@@ -14,7 +24,6 @@ const TeamSchema = new mongoose.Schema({
 	name: String,
 	description: String,
 	members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-	created_at: { type: Date, default: Date.now },
 }, {
 	timestamps: true
 });
@@ -26,7 +35,6 @@ const EventSchema = new mongoose.Schema({
 	representative: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	required_amount: Number,
 	collected_amount: { type: Number, default: 0 },
-	created_at: { type: Date, default: Date.now }
 });
 
 const DonationSchema = new mongoose.Schema({
@@ -34,7 +42,6 @@ const DonationSchema = new mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	amount: Number,
 	payment_method: String,
-	created_at: { type: Date, default: Date.now },
 },  {
 	timestamps: true
 });
@@ -44,7 +51,6 @@ const AuditSchema = new mongoose.Schema({
 	event: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
 	amount: Number,
 	payment_method: String,
-	created_at: { type: Date, default: Date.now },
 }, {timestamps: true});
 
 const Audit = mongoose.model("Audit", AuditSchema);
