@@ -8,7 +8,7 @@ function routerAPI(app) {
 	app.use("/api", router);
 	router.use("/users", UsersRouter);
 	router.use("/auth", AuthRouter);
-	router.use("/team", TeamRouter);
+	router.use("/teams", TeamRouter);
 }
 
 module.exports = routerAPI;
