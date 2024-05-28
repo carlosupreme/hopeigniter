@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	password: {
 
-		type: String, select: false, required: true
+		type: String, required: true
 	},
 	
 	accountType: {type: String, enum: ["Empresa", "Normal"], default: "Normal"},
