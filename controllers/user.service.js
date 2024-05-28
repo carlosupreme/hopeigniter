@@ -1,5 +1,5 @@
 const boom = require("@hapi/boom");
-const {User } = require('../db/models/models');
+const { User } = require("../db/models/models");
 class UserService {
 	constructor() {}
 
@@ -22,17 +22,19 @@ class UserService {
 		if (!user) throw boom.notFound("Usuario no encotnrado");
 		return user;
 	}
+
 	async findByName(name) {
 		try {
 			const regex = new RegExp(name, "i");
 			const users = await User.find({
-				$or: [{name: regex}],
+				$or: [{ name: regex }],
 			}).select("-password");
 			return users;
 		} catch (error) {
 			throw boom.notFound("No se encuentra ninguna coincidencia");
 		}
 	}
+
 	async findByEmail(email) {
 		try {
 			const user = await User.findOne({ email });
