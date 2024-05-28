@@ -55,7 +55,7 @@ router.get(
 	async (req, res, next) => {
 		try {
 			const { teamId } = req.params;
-			const teams = await service.findById(teamsId);
+			const team = await service.findById(teamId);
 
 			res.status(201).json(team);
 		} catch (error) {
@@ -108,6 +108,21 @@ router.put(
 			const { teamId } = req.params;
 			const { members } = req.body;
 			const team = await service.removeMembers(teamId, members);
+
+			res.status(201).json(team);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
+
+router.delete(
+	"/:teamId",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res, next) => {
+		try {
+			const { teamId } = req.params;
+			const team = await service.deleteTeam(teamId);
 
 			res.status(201).json(team);
 		} catch (error) {
