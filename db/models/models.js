@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			enum: ["Empresa", "Normal"],
 			default: "Normal",
-		},
+        },
+
+        
 	},
 	{
 		timestamps: true,

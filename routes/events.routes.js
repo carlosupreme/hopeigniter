@@ -30,11 +30,11 @@ router.post(
 	async (req, res, next) => {
 		try {
 			const data = req.body;
-            const idUser= req.user?.user._id
+			const idUser = req.user?.user._id;
 
-            // console.log(req.user.sub);
-            // console.log("id usuario login ",idUser?.user._id);
-            console.log("USUARIO ID",idUser);
+			// console.log(req.user.sub);
+			// console.log("id usuario login ",idUser?.user._id);
+			console.log("USUARIO ID", idUser);
 			const newEvent = await service.create(data, idUser);
 			res.status(201).json(newEvent);
 		} catch (error) {
