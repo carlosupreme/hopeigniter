@@ -1,11 +1,19 @@
 const boom = require("@hapi/boom");
-const {User } = require('../db/models/models');
+const { User } = require("../db/models/models");
+const bcrypt = require("bcrypt");
 class UserService {
 	constructor() {}
 
 	async create(data) {
-		const newUser = await User.create(data);
-		return newUser;
+		const hash = await bcrypt.hash(data.password, 10);
+		const newUser = await User.create({
+			...data,
+			password: hash,
+		})
+		const usrobj = newUser.toObject()
+		
+		delete usrobj.password
+		return usrobj;	
 	}
 
 	async find() {
@@ -26,7 +34,7 @@ class UserService {
 		try {
 			const regex = new RegExp(name, "i");
 			const users = await User.find({
-				$or: [{name: regex}],
+				$or: [{ name: regex }],
 			}).select("-password");
 			return users;
 		} catch (error) {
@@ -41,6 +49,17 @@ class UserService {
 		} catch (error) {
 			throw boom.badGateway();
 		}
+	}
+
+	async deleteOne(id) {
+		try {
+			const user = await User.findByIdAndDelete(id)
+
+			return {
+				message: "Usuario eliminado",
+				id, user
+			};
+		} catch (error) {}
 	}
 }
 

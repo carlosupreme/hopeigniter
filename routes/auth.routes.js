@@ -32,13 +32,10 @@ router.post(
 router.post("/register", async (req,res, next)=>{
 	try {
 		let data = req.body
-		data  = {
-			...data,
-			password: await hash(data.password, 10)
-		}
-		const usuario = await service.create(data)
-		
-		res.status(201).json(usuario)
+		const newUser = await service.create(data)
+		// const usrobj = newUser.toObject()
+		// delete usrobj.password
+		res.status(201).json(newUser)
 	} catch (error) {
 		next(error)
 	}

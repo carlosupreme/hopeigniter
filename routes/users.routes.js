@@ -33,4 +33,14 @@ router.get("/search", async (req, res, next) => {
 	}
 });
 
+router.delete("/:id", async (req,res,next)=>{
+	try {
+		const {id} = req.params
+		const response = await service.deleteOne(id)
+		res.json(response)
+	} catch (error) {
+		next(error)
+	}
+})
+
 module.exports = router;
