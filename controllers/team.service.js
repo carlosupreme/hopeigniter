@@ -19,7 +19,14 @@ class TeamService {
 	}
 
 	async findById(id) {
-		const team = await Team.findById(id);
+		const team = await Team.findById(id).populate({
+			path: "members",
+			pupulate: {
+				path: "members",
+				model: "User",
+				select: "-password"
+			}
+		}).populate('representative', "-password");
 
 		if (!team) throw boom.notFound();
 

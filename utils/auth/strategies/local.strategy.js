@@ -24,7 +24,9 @@ const localStrategy = new Strategy(
 				done(unauthorized(), false);
 				console.log("password incorrect");
 			}
-			done(null, user);
+			const objusr = user.toObject()
+			delete objusr.password
+			done(null, objusr);
 		} catch (error) {
 			console.log();
 			done(error, false);
