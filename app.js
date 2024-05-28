@@ -3,6 +3,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const debug = require('debug')("hopeignite:app");
 const { config } = require("./config");
 const {
 	logErrors,
@@ -34,5 +35,5 @@ app.use(boomErrorHandler);
 app.use(errorHandler);
 
 app.listen(config.port, () => {
-	console.log(`Servidor ejecutandose en http://localhost:${config.port}/api`);
+	debug(`Servidor ejecutandose en http://localhost:${config.port}/api`);
 });

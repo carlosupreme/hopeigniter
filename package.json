@@ -1,9 +1,9 @@
 {
-	"name": "api",
+	"name": "hopeignite",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "DEBUG=api:* & nodemon app.js"
+		"dev": "set DEBUG=hopeignite:* & nodemon app.js"
 	},
 	"dependencies": {
 		"@hapi/boom": "^10.0.1",
