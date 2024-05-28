@@ -87,8 +87,7 @@ class TeamService {
 
 	async findTeamsByMemberId(memberId) {
 		const teams = await Team.find({
-            members: { $in: [memberId] },
-            $or: [{representative: memberId}]
+			$or: [{ members: { $in: [memberId] } }, { representative: memberId }],
 		});
 		return teams;
 	}
