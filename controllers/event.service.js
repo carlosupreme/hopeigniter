@@ -1,5 +1,5 @@
 const { notFound } = require("@hapi/boom");
-const { Event, Team } = require("../db/models/models");
+const { Event, Team, User } = require("../db/models/models");
 class EventService {
 	constructor() {}
 	async find() {
@@ -31,12 +31,14 @@ class EventService {
 		return event;
 	}
 
-	async create(data) {
+	async create(data, idUser) {
 		const team = await Team.findById(data.team);
 		if (!team) throw notFound("Equipo no encontrado");
+        const representative = await User.findById(idUser)
+        if(!representative) throw notFound("Usuario no encontrado")
 		data = {
 			...data,
-			representative: team.representative,
+			representative: idUser,
 		};
 		const event = await Event.create(data);
 		return event;
