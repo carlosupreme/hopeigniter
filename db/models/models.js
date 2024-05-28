@@ -45,7 +45,7 @@ const AuditSchema = new mongoose.Schema({
 	amount: Number,
 	payment_method: String,
 	created_at: { type: Date, default: Date.now },
-});
+}, {timestamps: true});
 
 const Audit = mongoose.model("Audit", AuditSchema);
 const User = mongoose.model("User", UserSchema);
@@ -58,4 +58,5 @@ module.exports = {
 	Team,
 	Event,
 	Donation,
+	Audit
 };

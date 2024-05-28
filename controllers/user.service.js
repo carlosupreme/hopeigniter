@@ -1,5 +1,5 @@
 const boom = require("@hapi/boom");
-const User = require("../db/models/user.model");
+const {User } = require('../db/models/models');
 class UserService {
 	constructor() {}
 
@@ -26,7 +26,7 @@ class UserService {
 		try {
 			const regex = new RegExp(name, "i");
 			const users = await User.find({
-				$or: [{ firstname: regex }, { lastname: regex }],
+				$or: [{name: regex}],
 			}).select("-password");
 			return users;
 		} catch (error) {
