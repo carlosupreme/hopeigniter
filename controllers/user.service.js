@@ -30,6 +30,7 @@ class UserService {
 		if (!user) throw boom.notFound("Usuario no encotnrado");
 		return user;
 	}
+
 	async findByName(name) {
 		try {
 			const regex = new RegExp(name, "i");
@@ -41,6 +42,7 @@ class UserService {
 			throw boom.notFound("No se encuentra ninguna coincidencia");
 		}
 	}
+
 	async findByEmail(email) {
 		try {
 			const user = await User.findOne({ email });
