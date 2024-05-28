@@ -9,7 +9,7 @@ class EventService {
 				populate: {
 					path: "members",
 					model: "User",
-                    select: "-password"
+					select: "-password",
 				},
 			})
 			.populate("representative", "-password");
@@ -23,7 +23,7 @@ class EventService {
 				populate: {
 					path: "members",
 					model: "User",
-                    select: '-password'
+					select: "-password",
 				},
 			})
 			.populate("representative", "-password");
@@ -34,20 +34,20 @@ class EventService {
 	async create(data, idUser) {
 		const team = await Team.findById(data.team);
 		if (!team) throw notFound("Equipo no encontrado");
-        const representative = await User.findById(idUser)
-        if(!representative) throw notFound("Usuario no encontrado")
+		const representative = await User.findById(idUser);
+		if (!representative) throw notFound("Usuario no encontrado");
 		data = {
 			...data,
 			representative: idUser,
 		};
 		const event = (await Event.create(data)).populate({
-            path: "team",
-            populate: {
-                path: "members",
-                model: "User",
-                select: "-password"
-            }
-        });
+			path: "team",
+			populate: {
+				path: "members",
+				model: "User",
+				select: "-password",
+			},
+		});
 		return event;
 	}
 	async deleteOne(id) {
@@ -66,6 +66,17 @@ class EventService {
 			event,
 		};
 	}
+
+	// async updateAmount(id, amount) {
+	// 	const event = await Event.findById(id);
+	// 	if (!event) throw notFound("Evento no encontrado");
+	// 	event.collected_amount = event?.collected_amount + amount;
+	// 	await event.save();
+	// 	return {
+	// 		message: "Cantidad actualizada",
+	// 		event,
+	// 	};
+	// }
 }
 
 module.exports = EventService;

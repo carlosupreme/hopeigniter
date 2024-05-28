@@ -57,10 +57,11 @@ router.patch("/:id", async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const data = req.body;
-		const rta = await service.update(id, body);
+		const rta = await service.update(id, data);
 		res.json(rta);
 	} catch (error) {
 		next(error);
 	}
 });
+
 module.exports = router;
