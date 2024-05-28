@@ -35,12 +35,27 @@ router.post(
 );
 
 router.get(
+	"/my-teams",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res, next) => {
+		try {
+			const userId = req.user.sub;
+			const teams = await service.findTeamsByMemberId(userId);
+
+			res.status(201).json(teams);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
+
+router.get(
 	"/:teamId",
 	passport.authenticate("jwt", { session: false }),
 	async (req, res, next) => {
 		try {
 			const { teamId } = req.params;
-			const team = await service.findById(teamId);
+			const teams = await service.findById(teamsId);
 
 			res.status(201).json(team);
 		} catch (error) {

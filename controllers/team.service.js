@@ -19,14 +19,16 @@ class TeamService {
 	}
 
 	async findById(id) {
-		const team = await Team.findById(id).populate({
-			path: "members",
-			pupulate: {
+		const team = await Team.findById(id)
+			.populate({
 				path: "members",
-				model: "User",
-				select: "-password"
-			}
-		}).populate('representative', "-password");
+				pupulate: {
+					path: "members",
+					model: "User",
+					select: "-password",
+				},
+			})
+			.populate("representative", "-password");
 
 		if (!team) throw boom.notFound();
 
@@ -81,6 +83,14 @@ class TeamService {
 		if (!team.members.includes(member)) return;
 
 		team.members = team.members.filter((m) => m != member);
+	}
+
+	async findTeamsByMemberId(memberId) {
+		const teams = await Team.find({
+            members: { $in: [memberId] },
+            $or: [{representative: memberId}]
+		});
+		return teams;
 	}
 
 	async removeMembers(id, members) {
