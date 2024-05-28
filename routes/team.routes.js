@@ -23,7 +23,7 @@ router.post(
 	async (req, res, next) => {
 		try {
 			const body = req.body;
-			const representative = req.user.sub;
+			const representative = req.user?.user._id;
 			console.log({ ...body, representative });
 			const team = await service.create({ ...body, representative });
 
@@ -39,7 +39,7 @@ router.get(
 	passport.authenticate("jwt", { session: false }),
 	async (req, res, next) => {
 		try {
-			const userId = req.user.sub;
+			const userId = req.user?.user._id;
 			const teams = await service.findTeamsByMemberId(userId);
 
 			res.status(201).json(teams);
