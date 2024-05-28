@@ -26,9 +26,7 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			enum: ["Empresa", "Normal"],
 			default: "Normal",
-        },
-
-        
+		},
 	},
 	{
 		timestamps: true,
@@ -52,21 +50,22 @@ const TeamSchema = new mongoose.Schema(
 );
 
 const EventSchema = new mongoose.Schema({
-	name: {type: String, required: true},
+	name: { type: String, required: true },
 	description: String,
 	team: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
 	representative: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	required_amount: Number,
-	photos:[{type: String}],
+	photos: [{ type: String }],
 	collected_amount: { type: Number, default: 0 },
 });
 
 const DonationSchema = new mongoose.Schema(
 	{
 		event: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		amount: Number,
-		payment_method: String,
+		user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+		stripeCustomerId: { type: String, required: true },
+		stripePaymentMethodId: { type: String, required: true },
 	},
 	{
 		timestamps: true,
