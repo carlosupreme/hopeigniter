@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const EventService = require("../controllers/event.service");
 const passport = require("passport");
+const {upload} = require('../middlewares/multer');
 
 const router = Router();
 
@@ -27,14 +28,15 @@ router.get("/:id", async (req, res, next) => {
 router.post(
 	"/",
 	passport.authenticate("jwt", { session: false }),
+    upload.array("photos", 3),
 	async (req, res, next) => {
 		try {
-			const data = req.body;
-			const idUser = req.user?.user._id;
+			let data = req.body;
+            data.photos = req.files.map((file) => {
+				return file.path.replace("public/", "");
+			});
 
-			// console.log(req.user.sub);
-			// console.log("id usuario login ",idUser?.user._id);
-			console.log("USUARIO ID", idUser);
+			const idUser = req.user?.user._id;
 			const newEvent = await service.create(data, idUser);
 			res.status(201).json(newEvent);
 		} catch (error) {
@@ -57,10 +59,11 @@ router.patch("/:id", async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const data = req.body;
-		const rta = await service.update(id, body);
+		const rta = await service.update(id, data);
 		res.json(rta);
 	} catch (error) {
 		next(error);
 	}
 });
+
 module.exports = router;
