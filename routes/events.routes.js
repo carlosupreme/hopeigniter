@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const EventService = require("../controllers/event.service");
+const passport = require("passport");
 
 const router = Router();
 
@@ -23,15 +24,24 @@ router.get("/:id", async (req, res, next) => {
 	}
 });
 
-router.post("/", async (req, res, next) => {
-	try {
-		const data = req.body;
-		const newEvent = await service.create(data);
-		res.status(201).json(newEvent);
-	} catch (error) {
-		next(error);
+router.post(
+	"/",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res, next) => {
+		try {
+			const data = req.body;
+			const idUser = req.user?.user._id;
+
+			// console.log(req.user.sub);
+			// console.log("id usuario login ",idUser?.user._id);
+			console.log("USUARIO ID", idUser);
+			const newEvent = await service.create(data, idUser);
+			res.status(201).json(newEvent);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 router.delete("/:id", async (req, res, next) => {
 	try {
