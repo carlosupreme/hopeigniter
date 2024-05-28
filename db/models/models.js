@@ -36,6 +36,15 @@ const DonationSchema = new mongoose.Schema({
 	created_at: { type: Date, default: Date.now },
 });
 
+const AuditSchema = new mongoose.Schema({
+	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+	event: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
+	amount: Number,
+	payment_method: String,
+	created_at: { type: Date, default: Date.now },
+});
+
+const Audit = mongoose.model("Audit", AuditSchema);
 const User = mongoose.model("User", UserSchema);
 const Team = mongoose.model("Team", TeamSchema);
 const Event = mongoose.model("Event", EventSchema);
