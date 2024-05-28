@@ -4,7 +4,6 @@ const passport = require("passport");
 const router = Router();
 const service = new TeamService();
 
-
 router.get(
 	"/",
 	passport.authenticate("jwt", { session: false }),
@@ -62,6 +61,38 @@ router.patch(
 				description,
 				representative,
 			});
+
+			res.status(201).json(team);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
+
+router.put(
+	"/add-members/:teamId",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res, next) => {
+		try {
+			const { teamId } = req.params;
+			const { members } = req.body;
+			const team = await service.addMembers(teamId, members);
+
+			res.status(201).json(team);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
+
+router.put(
+	"/remove-members/:teamId",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res, next) => {
+		try {
+			const { teamId } = req.params;
+			const { members } = req.body;
+			const team = await service.removeMembers(teamId, members);
 
 			res.status(201).json(team);
 		} catch (error) {

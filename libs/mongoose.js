@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const { config } = require("../config");
 const debug = require("debug")("hopeignite:mongoose");
 
+
+console.log("connecting to mongo");
 mongoose
 	.connect(config.dbUri)
 	.then(() => {

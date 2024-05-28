@@ -1,8 +1,17 @@
 const boom = require("@hapi/boom");
 const { Team } = require("../db/models/models");
+const { Types } = require("mongoose");
 
 class TeamService {
 	constructor() {}
+
+	async find() {
+		try {
+			return await Team.find();
+		} catch (error) {
+			throw boom.badImplementation();
+		}
+	}
 
 	async create(data) {
 		const team = await Team.create(data);
@@ -42,12 +51,40 @@ class TeamService {
 		return team;
 	}
 
-	async find() {
-		try {
-			return await Team.find();
-		} catch (error) {
-			throw boom.badImplementation();
-		}
+	async addMember(team, member) {
+		if (team.members.includes(member)) return;
+
+		team.members.push(member);
+	}
+
+	async addMembers(id, members) {
+		const team = await Team.findById(id);
+
+		if (!team) throw boom.notFound();
+
+		members.forEach((m) => this.addMember(team, m));
+
+		await team.save();
+		return team;
+	}
+
+	async removeMember(team, member) {
+		if (!team.members.length) return;
+
+		if (!team.members.includes(member)) return;
+
+		team.members = team.members.filter((m) => m != member);
+	}
+
+	async removeMembers(id, members) {
+		const team = await Team.findById(id);
+
+		if (!team) throw boom.notFound();
+
+		members.forEach((m) => this.removeMember(team, m));
+
+		await team.save();
+		return team;
 	}
 }
 
